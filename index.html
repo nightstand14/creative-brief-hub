@@ -1013,23 +1013,28 @@ async function generateImages(brief) {
 
 async function buildClaudePrompt(brief) {
   const layerText = brief.textLayers.map(l => `${l.type}: "${l.text}" (${l.font})`).join(', ');
-  const body = JSON.stringify({
-    name: brief.name,
-    platform: brief.platform,
-    type: brief.type,
-    size: brief.size,
-    quality: brief.quality,
-    module: brief.module,
-    textLayers: layerText,
-    visualBrief: brief.visualBrief,
-    textPlacement: brief.textPlacement,
-    sampleUrls: brief.samples.filter(s=>s.type==='url').map(s=>s.value),
-  });
+
+  const promptContent = `You are a creative director specialising in social media visuals. Build a precise, detailed image generation prompt based on this brief. Return ONLY the prompt text — no explanation, no preamble.
+
+Campaign: ${brief.name}
+Platform: ${brief.platform}
+Type: ${brief.type}
+Size: ${brief.size}
+Quality: ${brief.quality}
+Model: ${brief.module}
+Text Layers: ${layerText || 'none'}
+Visual Brief: ${brief.visualBrief || 'none'}
+Text Placement: ${brief.textPlacement || 'none'}
+Reference URLs: ${brief.samples.filter(s=>s.type==='url').map(s=>s.value).join(', ') || 'none'}
+
+Write a prompt under 250 words. Be specific about composition, lighting, color palette, mood, typography style, and text/copy placement.`;
 
   const res = await fetch('/api/claude', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body,
+    body: JSON.stringify({
+      messages: [{ role: 'user', content: promptContent }],
+    }),
   });
   if (!res.ok) throw new Error('Claude proxy error: ' + res.status);
   const data = await res.json();
