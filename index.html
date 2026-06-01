@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creative Brief Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --surface2: #F0EDE6;
+    --border: #E2DDD4;
+    --border2: #CBC5BA;
+    --text: #1A1714;
+    --text2: #6B6560;
+    --text3: #9B958E;
+    --accent: #C8602A;
+    --accent2: #E8835A;
+    --accent-bg: #FDF1EB;
+    --success: #2A7A4B;
+    --success-bg: #EBF5EF;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--text); letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .badge { font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 20px; background: var(--accent-bg); color: var(--accent); border: 1px solid #F0C4AE; }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+  /* SECTION TITLE */
+  .section-header { margin-bottom: 1.5rem; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--text); margin-bottom: 4px; }
+  .section-sub { font-size: 14px; color: var(--text2); }
+
+  /* CARD */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+  .card-title { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+  .card-title svg { width: 16px; height: 16px; opacity: 0.6; }
+
+  /* FORM ELEMENTS */
+  label { display: block; font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+  input, textarea, select {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--surface);
+    outline: none; transition: border-color 0.15s;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(200,96,42,0.08); }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  .field { margin-bottom: 1rem; }
+  .field:last-child { margin-bottom: 0; }
+
+  /* BRIEF CARD */
+  .brief-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: box-shadow 0.2s; }
+  .brief-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .brief-header { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .brief-num { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .brief-heading { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--text); line-height: 1.3; }
+  .brief-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .btn-icon { width: 30px; height: 30px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--text2); transition: all 0.15s; }
+  .btn-icon:hover { background: var(--surface2); border-color: var(--border2); }
+  .brief-body { padding: 1rem 1.25rem; }
+  .brief-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 20px; background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+  .tag.platform { background: var(--accent-bg); color: var(--accent); border-color: #F0C4AE; }
+  .brief-copy { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 10px; }
+  .brief-link { font-size: 12px; color: var(--accent); display: flex; align-items: center; gap: 4px; text-decoration: none; word-break: break-all; }
+  .brief-link:hover { text-decoration: underline; }
+  .brief-footer { padding: 0.75rem 1.25rem; background: var(--surface2); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .brief-status { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+  .status-ready { background: var(--success-bg); color: var(--success); }
+  .status-pending { background: #FEF3C7; color: #92400E; }
+  .status-generating { background: var(--accent-bg); color: var(--accent); }
+
+  /* BUTTONS */
+  .btn { padding: 10px 18px; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: #B5521F; }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border2); }
+  .btn-secondary:hover { background: var(--surface2); }
+  .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: var(--surface2); }
+  .btn-generate { background: var(--accent); color: white; font-size: 13px; padding: 7px 14px; border-radius: 6px; border: none; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background 0.15s; }
+  .btn-generate:hover { background: #B5521F; }
+  .btn-generate:disabled { background: var(--border2); cursor: not-allowed; }
+
+  /* API SETTINGS */
+  .settings-panel { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; }
+  .settings-title { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .settings-grid { grid-template-columns: 1fr; } }
+  input[type="password"] { font-family: monospace; letter-spacing: 2px; }
+
+  /* RESULTS */
+  .result-img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border); display: block; }
+  .result-placeholder { width: 100%; aspect-ratio: 1; background: var(--surface2); border-radius: var(--radius-sm); border: 1px dashed var(--border2); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: 13px; gap: 8px; }
+  .spinner { width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* TABS */
+  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
+  .tab { padding: 10px 16px; font-size: 14px; font-weight: 500; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab:hover:not(.active) { color: var(--text); }
+
+  /* BATCH BAR */
+  .batch-bar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .batch-info { font-size: 14px; color: var(--text2); }
+  .batch-info strong { color: var(--text); }
+  .batch-btns { display: flex; gap: 8px; }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: white; padding: 12px 18px; border-radius: var(--radius-sm); font-size: 14px; z-index: 999; opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { background: var(--success); }
+  .toast.error { background: #C0392B; }
+
+  /* EMPTY STATE */
+  .empty { text-align: center; padding: 3rem 1rem; color: var(--text3); }
+  .empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.4; }
+  .empty p { font-size: 14px; line-height: 1.6; }
+
+  /* TOKEN METER */
+  .token-meter { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text2); margin-top: 1rem; }
+  .token-bar-wrap { flex: 1; height: 4px; background: var(--border); border-radius: 2px; margin: 0 10px; }
+  .token-bar { height: 4px; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+
+  /* SECTION DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+  /* RESULTS GRID */
+  .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+  .result-item { position: relative; }
+  .result-item .download-btn { position: absolute; top: 8px; right: 8px; background: white; border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 12px; cursor: pointer; display: none; align-items: center; gap: 4px; font-family: 'DM Sans', sans-serif; }
+  .result-item:hover .download-btn { display: flex; }
+
+  .collapse-btn { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 13px; display: flex; align-items: center; gap: 4px; padding: 0; font-family: 'DM Sans', sans-serif; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Creative Brief <span>Hub</span></div>
+  <div class="header-right">
+    <span class="badge" id="brief-count-badge">0 briefs</span>
+    <button class="btn btn-secondary" onclick="toggleSettings()" style="font-size:13px; padding:7px 14px;">⚙ Settings</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- SETTINGS PANEL -->
+  <div class="settings-panel" id="settings-panel" style="display:none;">
+    <div class="settings-title">
+      API Keys
+      <button class="collapse-btn" onclick="toggleSettings()">✕ Close</button>
+    </div>
+    <div class="settings-grid">
+      <div class="field">
+        <label>Anthropic API Key</label>
+        <input type="password" id="anthropic-key" placeholder="sk-ant-..." oninput="saveKeys()" />
+      </div>
+      <div class="field">
+        <label>Higgsfield API Key</label>
+        <input type="password" id="higgsfield-key" placeholder="hf-..." oninput="saveKeys()" />
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--text3); margin-top:10px;">🔒 Keys are stored locally in your browser only — never sent anywhere except the respective APIs.</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('briefs')">📋 Briefs</div>
+    <div class="tab" onclick="switchTab('add')">＋ Add Brief</div>
+    <div class="tab" onclick="switchTab('results')">🖼 Results</div>
+  </div>
+
+  <!-- TAB: BRIEFS -->
+  <div id="tab-briefs">
+    <div class="batch-bar">
+      <div class="batch-info"><strong id="brief-count">0</strong> briefs ready · Select all to generate in batch</div>
+      <div class="batch-btns">
+        <button class="btn btn-ghost" onclick="selectAll()" style="font-size:13px; padding:7px 14px;">Select all</button>
+        <button class="btn btn-primary" onclick="generateSelected()" style="font-size:13px; padding:7px 14px;">⚡ Generate selected</button>
+      </div>
+    </div>
+    <div id="briefs-list">
+      <div class="empty">
+        <div class="empty-icon">📋</div>
+        <p>No briefs yet.<br>Go to <strong>Add Brief</strong> to create your first one.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: ADD BRIEF -->
+  <div id="tab-add" style="display:none;">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <div class="card-title">Brief details</div>
+
+          <div class="field">
+            <label>Heading / Campaign Name *</label>
+            <input type="text" id="f-heading" placeholder="e.g. Summer Sale — Skincare Collection" />
+          </div>
+
+          <div class="field">
+            <label>Platform</label>
+            <select id="f-platform">
+              <option value="Instagram">Instagram</option>
+              <option value="Facebook">Facebook</option>
+              <option value="Both Instagram & Facebook">Both Instagram & Facebook</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Image Dimensions</label>
+            <select id="f-dimensions">
+              <option value="1080x1080 (Square)">1080×1080 — Square (Instagram/Facebook)</option>
+              <option value="1080x1350 (Portrait)">1080×1350 — Portrait (Instagram Feed)</option>
+              <option value="1200x628 (Landscape)">1200×628 — Landscape (Facebook Ad)</option>
+              <option value="1080x1920 (Story)">1080×1920 — Story</option>
+              <option value="Custom">Custom dimensions</option>
+            </select>
+          </div>
+
+          <div class="field" id="custom-dim-field" style="display:none;">
+            <label>Custom Dimensions</label>
+            <input type="text" id="f-custom-dim" placeholder="e.g. 800x600" />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-title">Creative direction</div>
+
+          <div class="field">
+            <label>Copy / Text to include</label>
+            <textarea id="f-copy" placeholder="e.g. '50% OFF — Limited Time Only. Shop Now.'" style="min-height:80px;"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Style Notes</label>
+            <textarea id="f-style" placeholder="e.g. Clean white background, warm tones, minimalist, luxury feel, soft shadows..." style="min-height:80px;"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Visual Reference Links</label>
+            <textarea id="f-links" placeholder="Paste links line by line&#10;https://example.com/ref1&#10;https://example.com/ref2" style="min-height:70px;"></textarea>
+          </div>
+
+          <div class="field">
+            <label>Target Audience <span style="color:var(--text3); font-weight:400;">(optional)</span></label>
+            <input type="text" id="f-audience" placeholder="e.g. Women 25-40, beauty enthusiasts, Malaysia" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:1.25rem; display:flex; gap:10px; justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="clearForm()">Clear</button>
+      <button class="btn btn-primary" onclick="addBrief()">＋ Add to briefs</button>
+    </div>
+
+    <!-- TOKEN ESTIMATE -->
+    <div class="token-meter" id="token-estimate" style="display:none;">
+      <span>Estimated tokens</span>
+      <div class="token-bar-wrap"><div class="token-bar" id="token-bar" style="width:0%"></div></div>
+      <span id="token-count">~0</span>
+    </div>
+  </div>
+
+  <!-- TAB: RESULTS -->
+  <div id="tab-results" style="display:none;">
+    <div id="results-list">
+      <div class="empty">
+        <div class="empty-icon">🖼</div>
+        <p>No generated images yet.<br>Generate from your briefs to see results here.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+let briefs = JSON.parse(localStorage.getItem('cbh_briefs') || '[]');
+let results = JSON.parse(localStorage.getItem('cbh_results') || '[]');
+let selected = new Set();
+let totalTokensUsed = 0;
+
+function saveKeys() {
+  localStorage.setItem('cbh_anthropic', document.getElementById('anthropic-key').value);
+  localStorage.setItem('cbh_higgsfield', document.getElementById('higgsfield-key').value);
+}
+
+function loadKeys() {
+  const ak = localStorage.getItem('cbh_anthropic') || '';
+  const hk = localStorage.getItem('cbh_higgsfield') || '';
+  document.getElementById('anthropic-key').value = ak;
+  document.getElementById('higgsfield-key').value = hk;
+}
+
+function toggleSettings() {
+  const p = document.getElementById('settings-panel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+
+function switchTab(tab) {
+  ['briefs','add','results'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((el, i) => {
+    el.classList.toggle('active', ['briefs','add','results'][i] === tab);
+  });
+}
+
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+function clearForm() {
+  ['f-heading','f-copy','f-style','f-links','f-audience'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-platform').value = 'Instagram';
+  document.getElementById('f-dimensions').value = '1080x1080 (Square)';
+  document.getElementById('token-estimate').style.display = 'none';
+}
+
+document.getElementById('f-dimensions').addEventListener('change', function() {
+  document.getElementById('custom-dim-field').style.display = this.value === 'Custom' ? 'block' : 'none';
+});
+
+['f-heading','f-copy','f-style','f-links','f-audience'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateTokenEstimate);
+});
+
+function updateTokenEstimate() {
+  const text = getFormText();
+  const est = Math.round(text.length / 4);
+  if (est > 10) {
+    document.getElementById('token-estimate').style.display = 'flex';
+    document.getElementById('token-count').textContent = '~' + est.toLocaleString();
+    const pct = Math.min((est / 1000) * 100, 100);
+    document.getElementById('token-bar').style.width = pct + '%';
+  }
+}
+
+function getFormText() {
+  return [
+    document.getElementById('f-heading').value,
+    document.getElementById('f-copy').value,
+    document.getElementById('f-style').value,
+    document.getElementById('f-links').value,
+    document.getElementById('f-audience').value
+  ].join(' ');
+}
+
+function addBrief() {
+  const heading = document.getElementById('f-heading').value.trim();
+  if (!heading) { showToast('Please enter a heading', 'error'); return; }
+
+  const dim = document.getElementById('f-dimensions').value;
+  const finalDim = dim === 'Custom' ? document.getElementById('f-custom-dim').value : dim;
+
+  const brief = {
+    id: Date.now(),
+    heading,
+    platform: document.getElementById('f-platform').value,
+    dimensions: finalDim,
+    copy: document.getElementById('f-copy').value.trim(),
+    style: document.getElementById('f-style').value.trim(),
+    links: document.getElementById('f-links').value.trim(),
+    audience: document.getElementById('f-audience').value.trim(),
+    status: 'ready',
+    created: new Date().toLocaleDateString('en-MY', { day:'numeric', month:'short' })
+  };
+
+  briefs.push(brief);
+  saveBriefs();
+  clearForm();
+  renderBriefs();
+  showToast('Brief added ✓', 'success');
+  switchTab('briefs');
+}
+
+function saveBriefs() {
+  localStorage.setItem('cbh_briefs', JSON.stringify(briefs));
+  const n = briefs.length;
+  document.getElementById('brief-count').textContent = n;
+  document.getElementById('brief-count-badge').textContent = n + ' brief' + (n !== 1 ? 's' : '');
+}
+
+function deleteBrief(id) {
+  briefs = briefs.filter(b => b.id !== id);
+  selected.delete(id);
+  saveBriefs();
+  renderBriefs();
+  showToast('Brief removed');
+}
+
+function toggleSelect(id) {
+  if (selected.has(id)) selected.delete(id);
+  else selected.add(id);
+  renderBriefs();
+}
+
+function selectAll() {
+  if (selected.size === briefs.length) selected.clear();
+  else briefs.forEach(b => selected.add(b.id));
+  renderBriefs();
+}
+
+function renderBriefs() {
+  const list = document.getElementById('briefs-list');
+  if (briefs.length === 0) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><p>No briefs yet.<br>Go to <strong>Add Brief</strong> to create your first one.</p></div>';
+    return;
+  }
+  list.innerHTML = briefs.map((b, i) => `
+    <div class="brief-card" style="margin-bottom:12px; ${selected.has(b.id) ? 'border-color:var(--accent); box-shadow:0 0 0 2px rgba(200,96,42,0.12);' : ''}">
+      <div class="brief-header">
+        <div style="flex:1;">
+          <div class="brief-num">Brief #${i+1} · ${b.created}</div>
+          <div class="brief-heading">${escHtml(b.heading)}</div>
+        </div>
+        <div class="brief-actions">
+          <button class="btn-icon" onclick="toggleSelect(${b.id})" title="${selected.has(b.id) ? 'Deselect' : 'Select'}" style="${selected.has(b.id) ? 'background:var(--accent-bg);border-color:var(--accent);color:var(--accent);' : ''}">
+            ${selected.has(b.id) ? '✓' : '○'}
+          </button>
+          <button class="btn-icon" onclick="deleteBrief(${b.id})" title="Delete">✕</button>
+        </div>
+      </div>
+      <div class="brief-body">
+        <div class="brief-tags">
+          <span class="tag platform">${escHtml(b.platform)}</span>
+          <span class="tag">${escHtml(b.dimensions)}</span>
+          ${b.audience ? `<span class="tag">${escHtml(b.audience)}</span>` : ''}
+        </div>
+        ${b.copy ? `<div class="brief-copy">"${escHtml(b.copy)}"</div>` : ''}
+        ${b.style ? `<div class="brief-copy" style="font-style:italic; color:var(--text3);">Style: ${escHtml(b.style)}</div>` : ''}
+        ${b.links ? b.links.split('\n').filter(l=>l.trim()).map(l => `<a class="brief-link" href="${escHtml(l.trim())}" target="_blank">🔗 ${escHtml(l.trim())}</a>`).join('') : ''}
+      </div>
+      <div class="brief-footer">
+        <span class="brief-status ${b.status === 'ready' ? 'status-ready' : b.status === 'generating' ? 'status-generating' : 'status-pending'}">${b.status === 'ready' ? '✓ Ready' : b.status === 'generating' ? '⏳ Generating...' : '⚠ Pending'}</span>
+        <button class="btn-generate" onclick="generateOne(${b.id})" ${b.status === 'generating' ? 'disabled' : ''}>
+          ${b.status === 'generating' ? '<span class="spinner" style="width:14px;height:14px;"></span> Generating' : '⚡ Generate'}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function generateOne(id) {
+  const brief = briefs.find(b => b.id === id);
+  if (!brief) return;
+  await runGeneration([brief]);
+}
+
+async function generateSelected() {
+  if (selected.size === 0) { showToast('Select at least one brief', 'error'); return; }
+  const toGenerate = briefs.filter(b => selected.has(b.id));
+  await runGeneration(toGenerate);
+}
+
+async function runGeneration(toGenerate) {
+  const anthropicKey = localStorage.getItem('cbh_anthropic') || '';
+  const higgsfieldKey = localStorage.getItem('cbh_higgsfield') || '';
+
+  if (!anthropicKey) { showToast('Add your Anthropic API key in Settings', 'error'); toggleSettings(); return; }
+  if (!higgsfieldKey) { showToast('Add your Higgsfield API key in Settings', 'error'); toggleSettings(); return; }
+
+  toGenerate.forEach(b => { b.status = 'generating'; });
+  saveBriefs(); renderBriefs();
+  showToast('Generating ' + toGenerate.length + ' image' + (toGenerate.length > 1 ? 's' : '') + '...');
+
+  for (const brief of toGenerate) {
+    try {
+      const prompt = await buildPromptWithClaude(brief, anthropicKey);
+      const imageUrl = await generateWithHighsfield(prompt, brief, higgsfieldKey);
+
+      const result = {
+        id: Date.now() + Math.random(),
+        briefId: brief.id,
+        briefHeading: brief.heading,
+        platform: brief.platform,
+        dimensions: brief.dimensions,
+        imageUrl,
+        prompt,
+        created: new Date().toLocaleString('en-MY')
+      };
+      results.push(result);
+      localStorage.setItem('cbh_results', JSON.stringify(results));
+
+      brief.status = 'ready';
+      selected.delete(brief.id);
+      showToast('✓ ' + brief.heading + ' generated!', 'success');
+    } catch (err) {
+      brief.status = 'ready';
+      showToast('Error: ' + err.message, 'error');
+      console.error(err);
+    }
+  }
+
+  saveBriefs(); renderBriefs(); renderResults();
+}
+
+async function buildPromptWithClaude(brief, apiKey) {
+  const userMsg = `You are a creative director. Build a concise, precise image generation prompt for Higgsfield AI based on this brief. Return ONLY the prompt text, nothing else.
+
+Heading: ${brief.heading}
+Platform: ${brief.platform}
+Dimensions: ${brief.dimensions}
+Copy/Text: ${brief.copy || 'none'}
+Style Notes: ${brief.style || 'none'}
+Target Audience: ${brief.audience || 'general'}
+Reference Links: ${brief.links || 'none'}
+
+Write a prompt under 200 words. Be specific about composition, lighting, color palette, mood, and any text overlays needed.`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 400,
+      messages: [{ role: 'user', content: userMsg }]
+    })
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error('Claude API: ' + (err.error?.message || res.status));
+  }
+
+  const data = await res.json();
+  const promptText = data.content.find(c => c.type === 'text')?.text || '';
+  totalTokensUsed += (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
+  return promptText.trim();
+}
+
+async function generateWithHighsfield(prompt, brief, apiKey) {
+  const dimMap = {
+    '1080x1080 (Square)': { width: 1080, height: 1080 },
+    '1080x1350 (Portrait)': { width: 1080, height: 1350 },
+    '1200x628 (Landscape)': { width: 1200, height: 628 },
+    '1080x1920 (Story)': { width: 1080, height: 1920 },
+  };
+  const dims = dimMap[brief.dimensions] || { width: 1080, height: 1080 };
+
+  const res = await fetch('https://api.higgsfield.ai/v1/images/generations', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + apiKey
+    },
+    body: JSON.stringify({
+      prompt,
+      width: dims.width,
+      height: dims.height,
+      num_images: 1
+    })
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error('Higgsfield API: ' + (err.message || res.status));
+  }
+
+  const data = await res.json();
+  return data.data?.[0]?.url || data.images?.[0]?.url || data.url || '';
+}
+
+function renderResults() {
+  const list = document.getElementById('results-list');
+  if (results.length === 0) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">🖼</div><p>No generated images yet.<br>Generate from your briefs to see results here.</p></div>';
+    return;
+  }
+  list.innerHTML = `
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+      <p style="font-size:14px; color:var(--text2);">${results.length} image${results.length !== 1 ? 's' : ''} generated</p>
+      <button class="btn btn-ghost" onclick="clearResults()" style="font-size:13px; padding:6px 12px;">Clear all</button>
+    </div>
+    <div class="results-grid">
+      ${results.slice().reverse().map(r => `
+        <div class="result-item">
+          ${r.imageUrl
+            ? `<img src="${escHtml(r.imageUrl)}" class="result-img" alt="${escHtml(r.briefHeading)}" loading="lazy" />`
+            : `<div class="result-placeholder"><span style="font-size:24px;">🖼</span><span>No preview</span></div>`
+          }
+          <button class="download-btn" onclick="downloadImage('${escHtml(r.imageUrl)}', '${escHtml(r.briefHeading)}')">⬇ Download</button>
+          <div style="margin-top:8px;">
+            <p style="font-size:13px; font-weight:500; color:var(--text);">${escHtml(r.briefHeading)}</p>
+            <p style="font-size:11px; color:var(--text3);">${escHtml(r.platform)} · ${escHtml(r.dimensions)}</p>
+            <p style="font-size:11px; color:var(--text3);">${escHtml(r.created)}</p>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function clearResults() {
+  if (!confirm('Clear all results?')) return;
+  results = [];
+  localStorage.setItem('cbh_results', JSON.stringify(results));
+  renderResults();
+}
+
+async function downloadImage(url, name) {
+  if (!url) { showToast('No image URL to download', 'error'); return; }
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name.replace(/[^a-z0-9]/gi, '_') + '.jpg';
+    a.click();
+  } catch {
+    window.open(url, '_blank');
+  }
+}
+
+loadKeys();
+renderBriefs();
+renderResults();
+</script>
+</body>
+</html>
