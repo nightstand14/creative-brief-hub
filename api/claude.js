@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -12,21 +12,21 @@ export default async function handler(req, res) {
   const body = req.body;
 
   // Health ping
-  if (body?.ping) return res.status(200).json({ ok: true });
+  if (body && body.ping) return res.status(200).json({ ok: true });
 
   const {
-    name, platform, type, size, quality, module: model,
-    textLayers, visualBrief, textPlacement, sampleUrls,
-  } = body;
+    name, platform, type, size, quality,
+    module: modelName, textLayers, visualBrief, textPlacement, sampleUrls,
+  } = body || {};
 
   const userMsg = `You are a creative director specialising in social media visuals. Build a precise, detailed image generation prompt based on this brief. Return ONLY the prompt text — no explanation, no preamble.
 
-Campaign: ${name}
-Platform: ${platform}
-Type: ${type}
-Size: ${size}
-Quality: ${quality}
-Model: ${model}
+Campaign: ${name || ''}
+Platform: ${platform || ''}
+Type: ${type || ''}
+Size: ${size || ''}
+Quality: ${quality || ''}
+Model: ${modelName || ''}
 Text Layers: ${textLayers || 'none'}
 Visual Brief: ${visualBrief || 'none'}
 Text Placement: ${textPlacement || 'none'}
@@ -44,7 +44,7 @@ Write a prompt under 250 words. Be specific about composition, lighting, color p
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 512,
+        max_tokens: 1000,
         messages: [{ role: 'user', content: userMsg }],
       }),
     });
@@ -60,4 +60,4 @@ Write a prompt under 250 words. Be specific about composition, lighting, color p
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-}
+};
